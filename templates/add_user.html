@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+        <div style="width: fit-content;" class="p-5 bg-light mx-auto border px-5 my-4">
+            <p class="py-1"> Note: The user's account may be replaced if he already has an account</p>
+            {{ form.hidden_tag() }}
+            <form method="post">
+                <p class="w-100 mx-auto row quote_2">
+                    {{ form.firstname(placeholder='His first name', class='col-md m-1 alert-info form-control') }}
+                    {{ form.lastname(placeholder='Last name, Other names', class='col-md m-1 alert-info form-control') }}<br>
+                    {{ form.email(placeholder='His email address', class='my-3 alert-info form-control p-2 w-100') }}<br>
+                </p>
+                <hr class="my-3">
+                {{ form.admin }}
+                {{ form.admin.label }}
+                <div><div class="btn btn-light border-dark mt-1 float-left px-3" onclick="history.back()">Cancel</div>
+                {{ form.submit(class='btn btn-primary mt-1 float-end', value='Create') }}</div>
+            </form>
+        </div>
+{% endblock %}

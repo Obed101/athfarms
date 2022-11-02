@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="center" class="center_o">
+	<div class="container">
+		<div class="row center_o1 text-center">
+			<div class="col-md-12">
+				<h1 class="text-white">Articles</h1>
+				{% if form.is_submitted() and form.search.data %}
+				<div class="h4 py-2 mx-auto text-light" style="max-width:fit-content;">
+					{% if count %}
+					{{ count }} article{{ 's contain' if not count == 1 else ' contains' }} "{{ form.search.data }}"
+				</div> 
+				{% else %}
+					<div class="mx-auto alert alert-info">Oops🤕 No article matched your search <span onclick="history.back()" class="btn alert-primary">Go back</span></div>
+				{% endif %}
+				{% else %}
+				<h5 class="text-light">{{ template.info }}</h5>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="blog">
+	<div class="container">
+		<div class="row blog_1">
+			<div class="col-md-4">
+				<div class="blog_1r">
+					<form class="blog_1r1 mt-3" method="post">
+						{{ form.csrf_token }} {{ form.hidden_tag() }}
+						<div class="input-group">
+							{{ form.search(class='form-control text-white', placeholder='Search...') }}
+							{{ form.submit(class='btn btn-dark input-group-btn', value='🔍') }}
+						</div>
+					</form>
+					<div class="blog_1r2 mt-4 p-3 alert-secondary">
+						<h5 class="mb-3 text-capitalize">our top Articles</h5>
+						<div class="blog_1r3i mt-3 row">
+							{% for top in template.art.query.order_by(template.art.views.desc()).all()[:3] %}
+							<div class="col-md-3 pt-2">
+								<div class="blog_1r3il">
+									<img alt="abc" class="w-100" src="/{{ top.cover }}">
+								</div>
+							</div>
+							<div class="col-md-8 border-bottom pb-2">
+								<div class="blog_1r3ir">
+									<a href="{{ url_for('view_article', id=top.id) }}">{{ top.subject }}</a>
+									<div class="font_14 text-muted"><i style="margin-right:5px;" class="fa fa-calendar-alt col_1"></i>
+										{{ top.date }}</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="blog_1r4 my-4 p-3 alert-secondary">
+						<h5 class="mb-3 col_1">Categories</h5>
+						{% for cate in template.categories %}
+						<div class="my-2 border-bottom pb-2 h5"><a href="{{ url_for('article_categories', category=cate) }}">
+							{{ cate.replace('_',' ')|capitalize }}s</a></div>
+						{% endfor %}
+					</div>
+						<div class="blog_1r5 mt-4 p-3 alert-secondary">
+						<h4 class="mb-3 col_1">Follow us</h4>
+						<ul class="social-network social-circle mb-0">
+							<li><a href="" class="icoFacebook" title="Facebook"><i class="fab fa-facebook"></i></a></li>
+							<li><a href="" class="icoTwitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="" class="icoGoogle" title="Google +"><i class="fab fa-instagram"></i></a></li>
+							<li><a href="" class="icoLinkedin" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
+						</ul>
+					</div>
+				</div>
+
+				{% if current_user.is_active %}
+				<a href="{{ url_for('new_article') }}" class="mt-4 btn btn-primary mx-auto">Got a resourceful info? Click to add</a>
+			  	{% endif %}
+			</div>
+
+			<div class="col-md-8">
+				<div class="blog_1l">
+				  {% if articles.items[0] %}
+					{% for article in articles.items %}
+					<div class="blog_1l1 border my-2 p-1">
+						<div class="bg-light p-2">
+							<!-- Menu Icon And Drop Down -->
+							{% if current_user.admin or current_user.id == article.user_id %}
+							<span class="a dropleft d-inline float-end">
+							<div class="fa fa-bars p-1" data-bs-toggle="dropdown"></div>
+							<ul class="dropdown-menu p-2 text-success bg-light" role="menu">
+								<li><a href="{{ url_for('edit_article', id=article.id) }}" class="w-100 py-1 fa fa-edit"> Edit</a></li>
+								<li><a href="articles/{{ article.id }}/delete" class="w-100 fa fa-trash-alt py-1"
+									onclick="return confirm('Are you sure?\nYou are deleting \'\'{{article.subject}}\'\' You can\'t undo after deleting');">
+									Delete</a></li>
+							</ul>
+							</span>
+							{% endif %}
+							<h4><a href="{{ url_for('view_article',id=article.id) }}">{{ article.subject|truncate(35) }}</a></h4>
+						</div>
+						<div class="d-flex">
+							<div class="clearfix d-inliine w-25" style="max-width: fit-content;">
+									<img src="/{{ article.cover }}"
+											class="float-left effect-jazz w-100 h-100" alt="img25">
+							</div>
+							<div class="w-75 float-end col-md-5 p-2">
+                			{{ article.message|striptags|safe|truncate(400) }} <br><a href="{{ url_for('view_article',id=article.id) }}"><b> View...</b></a></div>
+						</div>
+						<ul class="mt-3 d-flex">
+							<li class="col-md small"><i class="fa fa-calendar col_4"></i> {{ article.date }}</li>
+							<li class="col-md ml-0 small"><i class="fa fa-user col_4"></i> {{ template['users'].query.filter_by(id=article.user_id).first().fullname or 'Customer'}} </li>
+							<li class="col-md small text-capitalize"><a href="{{ url_for('article_categories', category=article.category) }}">🌵 {{ article.category.replace('_', ' ') }} </a></li>
+						</ul>
+					</div>
+					{% endfor %}
+					<!-- pagination -->
+					<nav aria-label="navigation" class="mx-auto" style="width:fit-content;">
+						<ul class="pagination justify-content-end py-3">
+							<li class="page-item {{ 'disabled' if articles.page == 1 else '' }}">
+								<a href="/articles?page={{ articles.prev_num }}" class="page-link">Prev</a>
+							</li>
+							{% for page_num in articles.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+							{% if page_num %}
+							{% if articles.page == page_num %}
+							<li class="page-item"><a class="page-link" href="/articles?page={{ page_num}}">{{ page_num }}</a></li>
+							{% else %}
+							<li class="page-item"><a class="page-link" href="/articles?page={{ page_num}}">{{ page_num }}</a></li>
+							{% endif %}
+							{% else %}
+							<span class="fa fa-ellipsis-h mx-1 pt-4 text-muted"></span>
+							{% endif %}
+							{% endfor %}
+
+							<li class="page-item {{ 'disabled' if articles.page == articles.pages else ''}}">
+								<a class="page-link" href="/articles?page={{ articles.next_num }}">Next</a>
+							</li>
+						</ul>
+					</nav>
+					{% else %} <h5 class="mt-5 text-center"><i>Oops 😦<br>No articles found in the selected query</i></h5>
+					{% endif%}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

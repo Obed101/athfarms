@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="center" class="center_o">
+ <div class="container">
+  <div class="row center_o1 text-center">
+   <div class="col-md-12">
+     <h1 class="text-white">Our Services</h1>
+	 <h5 class="normal col_3 mb-0">Explore Our Generous Services</h5>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="off">
+ <div class="container">
+  <div class="row off1">
+   <div class="col-md-6 mt-3">
+     <div class="off1l">
+	    <h5 class="col_1">ALWAYS FOR YOU</h5>
+		<h2>WE OFFER BEST AGRICULTURE SERVICES</h2>
+		<span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+		<p><i style="margin-right:5px;" class="fa fa-check col_1"></i> Mobiles are custom wrapped for easy identification.</p>
+		<p><i style="margin-right:5px;" class="fa fa-check col_1"></i> We are a fully insured nationally ranked brand.</p>
+		<p><i style="margin-right:5px;" class="fa fa-check col_1"></i> All work is backed by our exclusive “Streak-Free Guarantee”.</p>
+		<p><i style="margin-right:5px;" class="fa fa-check col_1"></i> We offer multiple services to maintain your home.</p>
+	 </div>
+   </div>
+   <div class="col-md-6">
+    <div class="off1r">
+	  <div class="grid">
+		  <figure class="effect-jazz mb-0">
+			<img src="{{url_for('static', filename='img/5.jpg') }}" class="w-100" alt="image">
+		  </figure>
+	  </div>
+	</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container" id="show-service">
+    <p class="text-white text-center mb-0 bg-secondary p-4">
+		We exist to serve you. Whatever you need to be successful in your agricultrue comes from us. Here are our services
+	</p>
+	<div class="d-flex flex-wrap m-2">
+		{% for service in template.services %}
+		<div class="col-md-4 service_item p-3 border small100">
+			{% if current_user.admin %}
+			<a href="/services/{{ service.id }}/delete"
+				class="col-sm float-end text-white fa fa-trash-alt border-bottom p-1 border-white"></a>
+			{% endif %}
+			<div class="col-lg">
+				<h5 class="text-primary" style="text-shadow:white 1px 2px;">{{ service.name|upper }}</h5>
+				<p class="mb-0">{{ service.description|safe }}</p>
+			</div>
+			<a href="{{ url_for('request_service', id=service.id) }}" class="text-muted btn btn-light border-primary d-block mx-auto"
+				onclick="$('#modal').show()">Request Service</a>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+<div class="mx-auto" style="width:fit-content;">Want a service not listed? 
+	<a class="btn btn-light border my-2" href="{{ url_for('contact') }}">Contact us</a>
+</div>
+</section>
+
+<section id="grow">
+  <div class="container">
+     <div class="row grow_1">
+	   <div class="col-md-5">
+	    <div class="grow_1l">
+		  <div class="grid">
+		  <figure class="effect-jazz mb-0">
+			<img src="{{url_for('static', filename='img/4.jpg') }}" class="w-100" alt="Image">
+		  </figure>
+	  </div>
+		</div>
+	   </div>
+	   <div class="col-md-7">
+	    <div class="grow_1r">
+		  <h5 class="col_1">Best Reliable Services</h5>
+		<h2>WE DO IT FOR YOU</h2>
+		<h4>20 YEARS OF EXPERIENCE</h4>
+		<span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+		<p>I have noticed that there is the need to educate the public on the benefits of allowing mangoes to ripe before getting plugged.</p>
+		<h6>Quality service <span class="col_2 float-end">99%</span></h6>
+		<div class="progress-bar border border-info" style="background-color:#f5f0e9;overflow:hidden;border-radius:7px;margin-top:20px;">
+			<div class="progress" style="background-color: #6b518c; height: 13px; overflow: hidden; border-radius: 7px; width: 99%;">
+			</div>
+		</div>
+		<h6 class="mt-4">Reliable <span class="col_2 float-end">100%</span></h6>
+		<div class="progress-bar" style="background-color:#f5f0e9;overflow:hidden;border-radius:7px;margin-top:20px;">
+			<div class="progress w-100" style="background-color: #6b518c; height: 13px; overflow: hidden; border-radius: 7px;">
+			</div>
+		</div>
+		</div>
+		<div class="float-start float-end mx-5 my-3 w-75"><a class="btn btn-success w-100" href="{{ url_for('contact') }}">CONTACT US</a></div>
+	   </div>
+	 </div>
+  </div>
+</section>
+
+<section id="testim">
+  <div class="container">
+    <div class="row testim_1">
+	 <div class="col-md-6">
+	  <div class="testim_1l">
+	    <h5 class="col_1">TESTIMONAILS</h5>
+		<h3>WHAT OUR CUSTOMERS ARE SAYING</h3>
+		<span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+		<p>If everything is fine in your perception, yet no progress, call an expert to check it out.</p>
+		 <span class="span_1"><i class="fa fa-user"></i></span>
+		 <h3>3000+</h3>
+		 <p>Agriculture projects are completed</p>
+	  </div>
+	 </div>
+	 <div class="col-md-6">
+	  <div class="testim_1r">
+	<div id="carouselExampleCaptions1" class="carousel" data-bs-ride="carousel">
+  <div class="carousel-inner col-md-4 border text-light bg-light">
+  <div class="carousel-item active to-left">
+      <div class="testim_1i row">
+		{% for i in [1, 1] %}
+        <div class="col-md bg-secondary mx-1">
+          <div style="font-family:cursive;">
+            <span class="text-white">
+			{% for i in [1, 1, 1, 1, 1] %}
+				<i class="fa fa-star"></i>
+			{% endfor %}
+            </span>
+            <span style="font-size:20px;" class="d-block mt-2 fa fa-quote-left"></span>
+            <p class="mt-1">If everything is fine in your perception, yet no progress, call an expert to check it out.</p>
+            <h5>Isaac Doe</h5>
+            <h6 class="mb-0">Suhum</h6>
+          </div>
+        </div>
+		{% endfor %}
+      </div>
+    </div>
+</div>
+</div>
+	  </div>
+	 </div>
+	</div>
+  </div>
+</section>
+{% if current_user.admin %}
+<div class="btn text-primary fa fa-plus-circle fa-3x position-fixed" style="right: 40px;bottom:40px;text-shadow:white 1px 1px;"
+	{% if current_user.admin %} onclick="$('.new').show()"{% endif %} ></div>
+{% endif %}			
+
+					<!-- Pop Up Modal For Requesting Service -->
+ {{ request.hidden_tag() }}
+ <div id="modal" class="modal position-fixed w-50 bg-light {{ 'd-block' if srv else '' }} p-5 small100" style="box-shadow: 0 0 30px;height:fit-content;margin:5% auto;left:0;right:0; border-radius:10px;">
+   <div class="btn btn-close float-end" onclick="$('#modal').toggleClass('d-block')"></div>
+   <div class="py-4 text-center text-primary"><h4>Last step! Submit this to request <i>{{ srv }}</i></h4></div>
+   <form method="post" class="m-auto" id="request" name="request">
+	 {{ request.csrf_token }}
+	 <div class="row">
+		{{ request.name(class='my-1 form-control col-md', placeholder='Enter Your name', required='required', value=current_user.fullname) }}
+		{{ request.email(class='my-1 form-control col-md', placeholder='Enter Your email', required='required', value=current_user.email) }}
+	</div>
+   {{ request.loc(class='w-100 my-3 form-control', placeholder='Location. Example: Suhum, E/R, Ghana') }}
+   {{ request.tel(class='w-100 my-3 form-control', placeholder='Your Phone Number') }}
+   Choose a date {{ request.date(class='w-50 d-inline form-control') }} <hr>
+   {{ request.submit(class='w-25 btn btn-primary mt-5 mx-auto float-end', value='Send') }}
+   <div class="btn btn-secondary w-25 mt-5 float-start" onclick="$('#modal').toggleClass('d-block')">Cancel</div>
+   </form>
+ </div>
+
+					<!-- Pop Up Modal For Adding New Service Item -->
+ {{ new.hidden_tag() }}
+ <div class="modal position-fixed w-50 bg-light p-5 small100 new" style="box-shadow: 0 0 30px;height:fit-content;margin:5% auto;left:0;right:0; border-radius:10px;">
+   <div class="btn btn-close float-end" onclick="$('.new').hide()"></div>
+   <div class="py-4 text-center text-primary"><h4>Create a new service item</h4></div>
+   <form method="post" class="m-auto" id="new" name="new">
+	 {{ new.csrf_token }}
+   {{ new.name(class='w-100 my-3 form-control', placeholder='Enter the service title', required='required') }}
+   {{ new.text(class='w-100 my-3 form-control', placeholder='Describe the service briefly', rows='5') }}
+   {{ new.submit(class='w-25 btn btn-primary mt-5 mx-auto float-end', value='Create') }}
+   <div class="btn btn-secondary w-25 mt-5 float-start" onclick="$('.new').hide()">Cancel</div>
+   </form>
+ </div>
+{% endblock %}

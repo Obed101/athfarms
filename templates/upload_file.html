@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5 bg-light mx-auto border my-5 w-50 small100" style="width: fit-content;">
+  {{ form.hidden_tag() }}
+  <h5 class="py-4 text-center h3">Upload a file</h5>
+  <form method="post" enctype="multipart/form-data">
+    <img src="" alt="Image preview" height="100" width="140" class="my-2" id="image">
+      <label for="content"class="btn border m-2"><i class="fa fa-camera"></i> Choose</label>
+      {{ form.content(class='my-2 d-none', id='content', onchange="image.src = window.URL.createObjectURL(this.files[0]);") }}
+
+     {{ form.f_name(placeholder='Type in the title', size=30, class='form-control mb-4') }}
+    {{ form.message(class='w-100 form-control', rows='8', placeholder='Describe the file') }}
+    <hr>
+    {{ form.category.label }}
+    {{ form.category }}
+    <hr>
+    <div>
+      <div class="btn btn-light border float-left p-2" onclick="history.back()">Cancel</div>
+      {{ form.submit(class='btn btn-primary float-end') }}
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+{{ form.hidden_tag() }}
+
+<div class="p-5 bg-light mt-2 m-auto border w-75">
+  <h2 class="font-weight-bold text-center">Create a new article</h2>
+
+  <form method="post" enctype="multipart/form-data" onsubmit="return document.getElementById('ing').value = 'Creating...'">
+    <div class="mx-auto w-50">
+      <img src="" alt="Cover image" height="200" class="position-relative w-100" id="preview">
+      <label for="cover" class='btn border-dark pt-1 text-dark w-100 small100'>Choose a cover image (Large prefered)</label>
+    </div>
+    <span>{{ form.cover(class='my-2 d-none', required='required', id='cover', onchange="preview.src = window.URL.createObjectURL(this.files[0]);") }}</span>
+    {{form.subject(placeholder='Type a simple article title',size=50, class='btn-light my-2 small100', required='required') }}
+
+    <select name="category" class="d-block my-1 py-1 w-25 float-end" required>
+      <option value="">Select a category</option>
+      {% for cate in template.categories %}
+      <option value="{{ cate }}">{{ cate.replace('_', ' ')|capitalize }}</option>
+      {% endfor %}
+    </select>
+    {{ ckeditor.create() }}
+    
+    <div onclick="history.back()" class="float-left bg-white mt-2 border-dark btn">Cancel</div>
+    {{ form.submit(class='btn btn-success float-end mt-2', id='ing') }}
+  </form>
+  {{ ckeditor.load() }}
+  {{ ckeditor.config(name='message') }}
+</div>
+{% endblock %}

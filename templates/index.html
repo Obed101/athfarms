@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="center" class="center_home">
+  <div class="slie" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for home in template['homes'] %}
+      <div class="carousel-item active slide to-left" style="display: block;">
+        <img src="{{ url_for('static', filename=home.bg) }}" height="500" class="d-block w-100" alt="Image">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 class="mb-3 col_4">ATHFARMS</h5>
+          <h1 class="text-white">{{ home['name'] }} </h1>
+          <p class="col_3 mb-4">{{ home.description }} </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<section id="about" class="py-5">
+  <div class="container">
+    <div class="row exep_1">
+      <div class="col-md-6">
+        <div class="exep_1lm position-relative">
+          <div class="exep_1lm1">
+            <img src="{{ url_for('static', filename='img/4.jpg') }}" alt="img" class="w-100">
+          </div>
+          <div class="exep_1lm2 position-absolute">
+            <img src="{{ url_for('static', filename='img/5.jpg') }}" alt="image">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="exep_1r">
+          <h5 class="col_1">WHO ARE WE?</h5>
+          <h2>LEADERS IN THE AGRICULTURE MARKET</h2>
+          <span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+          <p>Athfarms is known for:</p>
+          <div class="exep_1ri row mt-3">
+            <div class="col-md-2">
+              <div class="exep_1ril">
+                <span style="font-size:40px;" class="col_1"><i class="fa fa-handshake"></i></span>
+              </div>
+            </div>
+            <div class="col-md-10">
+              <div class="exep_1rir">
+                <h3>Offering all Agriculture-related services</h3>
+              </div>
+            </div>
+          </div>
+            <hr class="my-0 bg-info">
+            <div class="exep_1ri row mt-3">
+            <div class="col-md-2">
+              <div class="exep_1ril">
+                <span style="font-size:40px;" class="col_1"><i class="fa fa-shopping-basket"></i></span>
+              </div>
+            </div>
+            <div class="col-md-10">
+              <div class="exep_1rir">
+                <h3>Making quality products available at affordable price</h3>
+              </div>
+            </div>
+          </div>
+          <p>We provide free tips and good advise on how to get the best out of agriculture</p>
+          <a class="btn btn-info d-block w-50 m-auto" href="/services">Learn More </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="serv">
+  <div class="container">
+    <div class="row serv_1 text-center mb-3">
+      <div class="col-md-12">
+        <h5 class="col_1">WHAT WE DO</h5>
+        <h2 class="mb-0">SERVICES WE OFFER</h2>
+        <span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+      </div>
+    </div>
+      <div class="d-flex mx-auto" style="max-width:fit-content;">
+        {% for serv in template.services[:3] %}
+          <div class="col-md-3 mx-auto serv2i border" style="box-shadow:grey 0 0 25px;">
+            <div class="position-relative">
+              <div class="serv_2i2i">
+                <div class="grid">
+                  <figure class="effect-jazz mb-0">
+                    <img src="{{ url_for('static', filename='img/'+str(template.random.randint(1, 5))+'.jpg') }}" class="w-100" height="170" alt="image">
+                  </figure>
+                </div>
+              </div>
+              <div class="serv_2i1">
+                <a href="{{ url_for('request_service', id=serv.id) }}">
+                  <h4>{{ serv.name   }}</h4>
+                  <p class="mb-0">{{ serv.description|safe|truncate(60) }}</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <a class="btn btn-info d-block w-50 mx-auto mt-4" href="/services">More Services</a>
+  </div>
+</div>
+</section>
+<section id="type">
+  <div class="type_m">
+    <div class="container">
+      <div class="row type_1 text-center">
+        <div class="col-md-12">
+          <h5 class="col_3 mt-4 mb-3 h2">Get video tutorials</h5>
+          <a class="btn text-danger" href="#none"><i class="fab fa-youtube fa-6x"></i></a>
+          <h2 class="text-white">GET VIDEO TOTURIALS FOR FREE AT YOUR CONVENIENCE!</h2>
+          <p class="text-light m-3">Our youtube channel provides free tutorials on how you can gain more
+            from your farm, go organic, design your home garden, etc. Check it out</p>
+          <h5 class="mb-0 mt-4"><a class="btn btn-info" href="#none">Check it out </a></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="proj">
+  <div class="container">
+    <div class="row serv_1 text-center my-3">
+      <div class="col-md-12">
+        <h5 class="col_1">EXPLORE OUR ARTICLES</h5>
+        <h2 class="mb-0">OUR TOP ARTICLES</h2>
+        <span><i class="fa fa-leaf fa-3x col_4"></i></span>
+      </div>
+    </div>
+    <div class="d-flex mx-auto" style="max-width:fit-content;">
+      {% for article in template['arts'][:3] %}
+      <div class="col-md-4 m-2 hover p-2 border border-success" style="max-width:fit-content;border-radius:8px;">
+        <a href="{{ url_for('view_article', id=article.id) }}">
+          <img src="{{ article.cover}}" class="d-block m-auto" alt="Cover image" width="230" height="150">
+          <div class="col-lg w-100">{{ article.subject }}</div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="grow">
+  <div class="container">
+    <div class="row grow_1">
+      <div class="col-md-5">
+        <div class="grow_1l">
+          <div class="grid clearfix">
+            <figure class="effect-jazz mb-0">
+              <a href="#"><img src="{{ url_for('static', filename='img/4.jpg') }}" class="w-100 " alt="image"></a>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="grow_1r">
+          <h5 class="col_1">OUR PRODUCTS</h5>
+          <h2>BEST IN MARKET</h2>
+          <h4>20 YEARS OF EXPERIENCE</h4>
+          <span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+          <p>We offer you fresh and healthy vegetables for good life.</p>
+          <h6>Fresh<span class="col_2 float-end">~95%</span></h6>
+          <div class="progress-bar"
+            style="background-color:#f5f0e9;overflow:hidden;border-radius:7px;margin-top:20px;">
+            <div class="progress"
+              style="background-color: rgb(91, 140, 81); height: 13px; overflow: hidden; border-radius: 7px; width: 95%;">
+            </div>
+          </div>
+          <h6 class="mt-4">Organic <span class="col_2 float-end">100%</span></h6>
+          <div class="progress-bar"
+            style="background-color:#f5f0e9;overflow:hidden;border-radius:7px;margin-top:20px;">
+            <div class="progress"
+              style="background-color: rgb(91, 140, 81); height: 13px; overflow: hidden; border-radius: 7px; width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="qual">
+  <div class="type_m">
+    <div class="container">
+      <div class="row type_1 text-center">
+        <div class="col-md-12">
+          <h2 class="text-white">PROVIDE YOU THE HIGHEST QUALITY PRODUCTS THAT MEETS YOUR EXPECTATION</h2>
+          <p class="text-light mt-3">We know what is good for you. That's what you get from us.</p>
+          <h5 class="mb-0 mt-4 text-info"><a class="btn btn-info" href="{{ url_for('services') }}">Discover More </a></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

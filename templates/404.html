@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h4 class="border-bottom p-5 mx-auto bg-light text-center h1"><span class="fa fa-meh-blank"></span>
+    Page Not Found 
+</h4>
+<div class="text-center h4">The page you are looking for was not found 😒
+    <p class="small">Kindly check the URL you entered and try again</p>
+    <p class="small">If you folowed a link, that link could probably be broken. You can go back or explore the home page for more</p>
+</div>
+<div class="flex mx-auto my-5 py-4" style="width: fit-content;">
+<div class="btn border-dark px-5" onclick="history.back()">Go Back</div>
+<a href="/"><div class="btn btn-info px-5">Go Home</div></a>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+{{ form.hidden_tag() }}
+
+<div class="p-5 bg-light mt-2 m-auto border w-75 small100">
+  <h2 class="font-weight-bold text-center h4">Modifying "{{ article.subject }}"</h2>
+  <form method="post" enctype="multipart/form-data" onsubmit="return document.getElementById('ing').value = 'Saving...'">
+    {% if form.cover %}
+    <div class="mx-auto" style="width:fit-content;">
+      <img src="/{{ article.cover }}" alt="Cover image" height="200" width="300" class="my-2" id="preview">
+      <label for="pic"class="btn border m-2"><i class="fa fa-camera"></i> Change</label>
+      {{ form.cover(class='my-2 d-none', id='pic', onchange="preview.src = window.URL.createObjectURL(this.files[0]);") }}
+    </div>
+    {% endif %}
+      {{ form.subject(value=article.subject, size=25, class='btn-light my-2, py-1 small100 w-100') }}
+
+    <label for="cover" class='btn border-dark py-1 text-dark font-weight-bold small100'style='display:none;'> Change cover image (Large, Landscape)</label>
+    {{ ckeditor.create(value=article.message) }}
+  <div onclick="history.back()" class="float-left bg-white mt-2 border-dark btn">Cancel</div>
+    {{ form.submit(class='btn btn-success float-end mt-2', id='ing', value='Save Changes') }}
+  </form>
+  {{ ckeditor.load() }}
+  {{ ckeditor.config(name='message') }}
+</div>
+
+{% endblock %}

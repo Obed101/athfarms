@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+        <div style="width: fit-content;" class="p-4 bg-light mx-auto border px-5 my-4">
+            <p class="border-bottom border-dark text-center"> Please fill this form to create your account</p>
+            <form method="post"` enctype="multipart/form-data">
+            {{ form.hidden_tag() }} {{ form.csrf_token }}
+            
+            <img src="{{ current_user.pic }}" alt="Profile Image" height="100" width="100" class="my-2 rounded-circle" id="profile">
+            <label for="pic"class="btn border m-2"><i class="fa fa-camera"></i> Choose</label>
+            {{ form.pic(class='my-2 d-none', id='pic', onchange="profile.src = window.URL.createObjectURL(this.files[0]);") }}
+                    {{ form.firstname(class='form-control col-sm', placeholder='Your first name. Example: John') }}<br>
+                    {{ form.lastname(class='form-control col-sm', placeholder='Your last name. Example: Ayisi') }}<br>
+                    {{ form.email(size=40, class='form-control mt-3', placeholder='Your email address') }}<br>
+                
+                <p>
+                    {{ form.password(size=40, class='form-control', placeholder='password', required='required', id='pwd') }}<br>
+                    {{ form.confirm(size=40, class='mt-1 form-control', id='conf', placeholder='Repeat the password') }}<br>
+                </p>
+                <div><div class="btn btn-light border float-left m-3 p-2" onclick="history.back()">Cancel</div>
+                {{ form.submit(class='btn btn-primary m-3 float-end') }}</div>
+            </form>
+            <a class="mt-3 d-block text-center" href="{{ url_for('login')}}">I already have an account</a>
+        </div>
+{% endblock %}

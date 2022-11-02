@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+  <section id="center" class="center_o">
+    <div class="container">
+      <div class="row center_o1 text-center">
+        <div class="col-md-12">
+          <h1 class="text-white">Send us a message</h1>
+          <h5 class="normal text-white mb-0">Get in touch from anywhere</h5>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container" style="overflow-x:hidden">
+      <div class="contact_2 m-5 d-flex flex-wrap">
+        <div class="col-md-6">
+          <div class="contact_2l p-4">
+            <h5 class="col_2 text-center">GET IN TOUCH WITH US</h5>
+            <hr class="w-100 bg-info my-0">
+            <span style="font-size:40px;"><i class="fa fa-leaf col_4 text-center"></i></span>
+            <div class="h2 text-white text-center">How can we help?</div>
+            <div class="success"></div>
+            <form id="contactForm" method="post" onsubmit="return document.getElementById('ing').value='Submitting...'">
+              {% if not current_user.is_authenticated %}
+              <div class="row quote_2 mt-3 w-100 mx-auto">
+                  {{ form.name(class='col-md form-control', placeholder='Your name') }}
+                  {{ form.email(class='col-md form-control', placeholder='Your email', required='required') }}
+              </div>
+              {% endif %}
+              <div class="row quote_2 mt-4">
+                <div class="col-md-12">
+                  <div class="">
+                    {{ form.csrf_token }}
+                    {{ form.text(style='height:250px;width:100%', class='form-control', placeholder='Enter your message here') }}
+                  </div>
+                </div>
+              </div>
+              <div class="row quote_2 mt-3">
+                <div class="col-md-12">
+                  <input type="submit" class="btn btn-success float-end" id="ing">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="contact_2r text-center">
+            <img style="border-radius:5px;" src="{{ url_for('static', filename='img/5.jpg') }}" alt="image">
+            <h5 class="col_1 mt-4">CREATE A CONNECTION</h5>
+            <h3>HAVE A QUESTION?</h3>
+            <span style="font-size:40px;"><i class="fa fa-leaf col_4"></i></span>
+            <p>Get a quick answer conveniently from our regular newsletter. You will be notified when we
+              write a new article. Most of the time, answering your questions</p>
+              {% if not current_user.is_active %}
+              <div class="btn btn-info py-3 px-5" onclick="$('.modal').show()"
+              >GET STARTED</div>
+              {% else %} {{ subscribe.submit(form='subscribe', class='btn btn-info py-3 px-5', value='GET STARTED') }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <h3 class="text-center my-5">Locate Us In Suhum E/R, Ghana</h3>
+      <div class="row contact_3 mt-5">
+        <div class="mapouter bg-black">
+          <div class="gmap_canvas"><iframe width="800" height="300" id="gmap_canvas"
+                            src="https://maps.google.com/maps?q=suhum,%20ghana&t=k&z=13&ie=UTF8&iwloc=&output=embed"
+                            frameborder="1" scrolling="no" marginheight="0" marginwidth="0"></iframe><br>
+                    </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+            <!-- Pop Up Modal -->
+            {{ subscribe.hidden_tag() }} 
+            <div class="modal position-fixed w-50 bg-light p-5 small100" style="box-shadow: 0 0 30px;height:fit-content;margin: 5% auto;left:0;right:0; border-radius:10px;">
+              <div class="btn btn-close float-end" onclick="$('.modal').hide()"></div>
+              <div class="py-4 text-center text-primary"><h4> Almost There!</h4> Please Provide your name and email to complete</div>
+              <form method="post" class="m-auto" id="subscribe" name="subscribe">
+                {{ subscribe.csrf_token }}
+              {{ subscribe.name(class='w-100 my-3 p-2 form-control', placeholder='Enter your name', value=current_user.fullname) }}
+              {{ subscribe.email(class='w-100 my-3 p-2 form-control', placeholder='Your email here', required='required', value=current_user.email) }}
+              {{ subscribe.submit(class='w-25 btn btn-primary mt-5 mx-auto float-end') }}
+              <div class="btn btn-secondary w-25 mt-5 float-start" onclick="$('.modal').hide()">Cancel</div>
+              </form>
+            </div>
+
+{% endblock %}

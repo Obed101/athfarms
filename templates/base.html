@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{ title|capitalize }} | Athfarms</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/globe.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Goblin+One&display=swap" rel="stylesheet">
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+  <section id="top">
+    <div class="container">
+      <div class="row top_1 ">
+        <div class="top_1m text-center col-md-3">
+          <h3 class="mb-0" style="line-height:0.6em;" title="Home"><a href="/"><span style="margin-bottom:10px;"
+                class="d-inline-block"><i class="fa fa-leaf col_2"></i></span>ATHFARMS <br> <span
+                class="col_2 font_16 normal">AGRICULTURE</span></a></h3>
+        </div>
+        {% if not 'Home' == title %}
+        <div class="col-6" style="overflow: hidden;">
+        {% for home in template['homes'] %}
+        <div class="slide my-auto keep-moving">
+          <nobr>{{ home.description }} </nobr>
+        </div>
+        {% endfor %}
+        <hr class="alert-success m-0 w-100" style="height: 4px; box-shadow:#85f876 0 -5px 2px;">
+      </div>
+        {% endif %}
+        <div class="col-md-3 top-right float-end">
+          <div class="top_1r float-end">
+            <ul class="social-network social-circle mb-0 d-flex flex-wrap">
+              <li><a href="#" class="icoRss" title="Phone us"><i class="fa fa-phone"></i></a></li>
+              <li><a href="#" class="icoFacebook" title="Facebook"><i class="fab fa-facebook"></i></a></li>
+              <li><a href="#" class="icoTwitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+              <li><a href="#" class="icoGoogle" title="Email"><i class="fa fa-envelope"></i></a></li>
+              <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="header">
+    <nav class="navbar navbar-expand-md navbar-center navbar-light" id="navbar_sticky">
+      <div class="container">
+        <a class="navbar-brand col_2" href="/"><span style="margin-bottom:10px;" class="d-inline-block"><i
+              class="fa fa-leaf col_1"></i></span>
+          ATHFARMS <br><span style="margin-left:40px;" class="col_2 font_16 normal">AGRICULTURE</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-0 justify-content-center">
+            <li class="nav-item mx-1"><a class="nav-link" href="/articles">Articles</a></li>
+            <li class="nav-item mx-1"><a class="nav-link" href="/services">Services</a></li>
+            <li class="nav-item mx-1"><a class="nav-link" href="/gallery">Gallery</a></li>
+            <li class="nav-item mx-1"><a class="nav-link" href="/contact">Contact us</a></li>
+          </ul>
+        </div>
+        {% if current_user.is_authenticated %}
+      <div class="a dropdown text-center btn" title="{{ current_user.fullname }}">
+          <span data-bs-toggle="dropdown">
+            {% if current_user.pic %}
+            <img src="/{{ current_user.pic }}" class="rounded-circle" alt="img" height="40" width="40">&nbsp;
+            {% else %}
+            <div class="rounded-circle text-white d-inline-block bg-{{ template.random.choice(['info', 'secondary', 'primary', 'danger']) }}"
+              style="height: 40px;width:40px;">
+              <div class="text-center" style="font-size: x-large;">{{ current_user.fullname[0] }}</div>
+            </div>
+            {% endif %}
+            <i class="fa fa-caret-down text-white"></i>
+          </span>
+        <ul class="dropdown-menu p-1 no-change" role="menu" style="margin-right:-1in;min-width:fit-content;">
+          <h6 class="text-primary">{{ current_user.fullname }}</h6>
+          <li class="dropdown-divider"></li>
+          <li><a href="{{ url_for('profile') }}" title="Your account" class="fa fa-user-edit small p-2 w-100"> Your Account</a></li>
+          {% if current_user.admin %}
+          <li class="dropdown-divider"></li>
+          <li><a href="{{ url_for('users') }}" title="All users" class="fa fa-users small p-2 w-100"> All Users</a></li>
+          <li><a class="fa fa-comments small p-2 w-100" href="{{ url_for('messages') }}"> User Messages</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('logout') }}" title="Log Out" class="fa fa-sign-out-alt small p-2 w-100"> Log Out</a>
+          </li>
+        </ul>
+      </div>
+      {% else %}
+      <a href="{{ url_for('login') }}" title="Login" class="fa fa-sign-in-alt text-white fa-2x"></a>
+      {% endif %}
+      
+      </div>
+    </nav>
+  </section>
+  {% for message in get_flashed_messages() %}
+      <p class="alert alert-secondary text-center w-75 mx-auto my-3 small100">{{ message }}
+        <span class="btn btn-close float-end" data-bs-dismiss="alert"></span>
+      </p>
+  {% endfor %}
+  {{ form.hidden_tag() if form else '' }}
+  {% block content %}
+
+  {% endblock %}
+  <section id="footer"class="mt-5">
+    <div class="container">
+      <div class="row footer_1">
+        <div class="col-md-3">
+          <div class="footer_1i">
+            <h5 class="text-white">ABOUT</h5>
+            <hr style="width:60px; height:3px;">
+            <p class="col_3">Athfarms is a Ghanaian Agriculture institution that provides quality
+                            agricultrue products and delivers agriculture services
+            </p>
+          </div>
+          {% if current_user.admin %}
+          <h6 class="text-white">ADMINISTRATION</h6>
+          <hr class="w-75 my-0" style="height: 3px;">
+            <div><a class="text-light" href="{{ url_for('users') }}">All users</a></div>
+            <div><a class="text-light" href="{{ url_for('messages') }}">User Messages</a></div>
+            <div><a class="text-light" href="{{ url_for('profile') }}">Your Account</a></div>
+            <div><a class="text-light" href="{{ url_for('logout') }}">Log out</a></div>
+            {% elif current_user.is_active %}
+            <h6 class="text-white">{{ current_user.fullname }}</h6>
+          <hr class="w-50 my-0" style="height: 3px;">
+            <div><a class="text-light" href="{{ url_for('profile') }}">Your Account</a></div>
+            <div><a class="text-light" href="{{ url_for('logout') }}">Log out</a></div>
+            {% else %}
+          <h6 class="text-white">Get in</h6>
+          <div><a class="text-light" href="{{ url_for('login') }}">Log in</a></div>
+          <div><a class="text-light" href="{{ url_for('signup') }}">Sign up</a></div>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+          <div class="footer_1i1">
+            <h5 class="text-white">EXPLORE</h5>
+            <hr style="width:60px; height:3px;">
+            <div><a class="text-light" href="/">Home</a></div>
+            <div><a class="text-light" href="/#about">About us</a></div>
+            <div><a class="text-light" href="/services">Our Services</a></div>
+            <div><a class="text-light" href="/articles">Our Projects</a></div>
+            <div><a class="text-light" href="{{ url_for('gallery') }}">Gallery</a></div>
+            <div><a class="text-light" href="/articles">Articles</a></div>
+            <div><a class="text-light" href="/contact">Contact us</a></div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="footer_1i2 clearfix">
+            <h5 class="text-white big">RECENT POSTS</h5>
+            <hr class="w-25" style="height:3px;">
+            {% for rec in template.arts[:3] %}
+            <div class="footer_1i2i clearfix py-0 my-0 a">
+              <img src="/{{ rec.cover }}" alt="abc" height="90" width="90">
+              <p class="col_3"><a href="{{url_for('view_article', id=rec.id) }} "> {{ rec.subject|truncate(30) }}</a><br>
+                <span class="small">{{ rec.date }}</span>
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="footer_1i3 clearfix">
+            <h5 class="text-white big">CONTACT</h5>
+            <hr style="width:60px; height:3px;">
+            <p class="col_3 mt-3">Getting in touch is more easy than you think. You don't need to be a
+              customer to <a class="text-white border-bottom" href="/contact">contact us</a></p>
+            <ul>
+              <li class="col_2 mb-2"><a class="text-light" href="mailto://athfarms@gmail.com"><i class="fa fa-map-marker col_4"></i> Suhum E/R, Ghana</a> </li>
+              <li class="col_2 mb-2"><a class="text-light" href="mailto://athfarms@gmail.com"><i class="fa fa-phone col_4"></i> +233 244 444 444</a> </li>
+              <li class="col_2 mb-2"><a class="text-light" href="mailto://athfarms@gmail.com"><i class="fa fa-envelope col_4"></i> athfarms@gmail.com</a></li>
+            </ul>
+            <ul class="social-network social-circle mb-0">
+              <!-- <li><a href="#" class="icoRss" title="Rss"><i class="fa fa-rss"></i></a></li> -->
+              <li><a href="#" class="icoFacebook" title="Facebook"><i class="fab fa-facebook"></i></a></li>
+              <li><a href="#" class="icoTwitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+              <li><a href="#" class="icoGoogle" title="Youtube"><i class="fab fa-youtube"></i></a></li>
+              <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
+              <a href="tel://+233222222222" class="fa fa-arrow-top icon" title="Telephone"></a>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="footer_bm">
+    <div class="container">
+      <div class="footer_2 row">
+        <div class="col-md-8">
+          <div class="footer_2l">
+            <p class="mb-0 col_3">Copyright © 2022 Athfarms. All Rights Reserved</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="footer_2r float-end">
+            <ul class="mb-0">
+              <li class="d-inline-block"><a class="text-light" href="{{ url_for('contact') }}">Support</a></li>
+              <li style="margin-left:10px; margin-right:10px;" class="d-inline-block">
+                <a class="text-light" href="{{ url_for('services') }}">Terms Of Services </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script type="text/javascript">
+    window.onscroll = function () { scrollStyle() };
+    var navbar_sticky = document.getElementById("navbar_sticky");
+    var sticky = navbar_sticky.offsetTop;
+    var navbar_height = document.querySelector('.navbar').offsetHeight;
+    function scrollStyle() {
+      if (window.pageYOffset >= sticky + navbar_height) {
+        navbar_sticky.classList.add("sticky")
+        document.body.style.paddingTop = navbar_height + 'px';
+      } else {
+        navbar_sticky.classList.remove("sticky");
+        document.body.style.paddingTop = '0'
+      }
+    }
+
+    // slideshow in the pages
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+      let i;
+      let slides = $('.slide');
+      if (n > slides.length) { slideIndex = 1 }
+      if (n < 1) { slideIndex = slides.length }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+      }
+      slides[slideIndex - 1].style.display = 'block';
+    }
+    // Automatically changing them in 5 seconds
+    let change = plusSlides;
+    $('document').ready(setInterval('change(1)', 5000));
+
+              // Password validation
+    let password = document.getElementById('pwd');
+    let conf = document.getElementById('conf');
+    function confirmed() {
+      if (password.value != conf.value) {
+        conf.setCustomValidity('Passwords are not matching');
+      } else {
+        conf.setCustomValidity('');
+      }
+    }
+    conf.onkeyup = confirmed;
+    password.onchange = confirmed;
+
+  </script>
+</body>
+</html>

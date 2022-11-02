@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section id="center" class="center_o">
+  <div class="container">
+    <div class="row center_o1 text-center">
+      <div class="col-md-12">
+        <h1 class="text-white">Gallery</h1>
+        <h5 class="normal col_4 mb-0">Find images and videos of our products and services</h5>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="gallery">
+  <div class="container">
+    <h2 class="text-center">Images</h2>
+    <h5 class="text-muted text-center d-block mb-4">Select to view</h5>
+    <div class="row gallery_1 mb-4">
+      {% for img in template.files.query.filter_by(f_type='img').all() %}
+      <div class="border col-md-3 my-2">
+        <div class="gallery_1i">
+          <div class="d-flex flex-wrap"> <div class="text-center mx-auto">{{ img.original_name|truncate(45) }}</div>
+            <img src="/{{ img.path }}" style="cursor:pointer;" data-bs-target="#img_modal{{ img.id }}"
+              data-bs-toggle="modal" class="w-100">
+          </div>
+          <div class="modal fade" tabindex="-1" id="img_modal{{ img.id }}"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="h3 modal-title text-center">{{ img.original_name }}</div>
+                  <button type="button" class="btn-close h6" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <img src="/{{ img.path }}" class="w-100" alt="Image">
+                </div>
+                <div class="modal-footer">
+                  {% if current_user.admin %}
+                  <span class="btn btn-secondary"><a
+                    href="{{ url_for('delete_file', category=img.f_type, id=img.id) }}"
+                      onclick="return confirm('You are deleting this permanently');">Delete this image</a>
+                  </span>
+                  {% endif %}
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h2 class="text-center mb-0">Videos</h2>
+    <h5 class="text-muted text-center d-block mb-4">Select a video to view</h5>
+    <div class="row gallery_1 mb-4">
+      {% for vid in template.files.query.filter_by(f_type='vid').all() %}
+      <div class="col-md-3">
+        <div class="video pb-3 pt-1 m-1">
+          <div class="d-flex flex-wrap">
+            <div class="text-center w-100">{{ vid.original_name|truncate(45) }}</div>
+            <video height="150" alt="Image" class="w-100" style="cursor:pointer;" 
+              data-bs-target="#vid_modal{{ vid.id }}" data-bs-toggle="modal">
+              <source src="/{{ vid.path }}">
+            </video>
+          </div>
+          <div class="modal fade" tabindex="-1" id="vid_modal{{ vid.id }}"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="h3 modal-header bg-light">{{ vid.original_name }}
+                  <button type="button" class="btn-close h6" title="Pause and close" onclick="document.querySelector('#vid{{vid.id}}').pause();" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <video class="w-100" id="vid{{vid.id}}" controls><source src="/{{ vid.path }}"></video>
+                </div>
+                <div class="modal-footer">
+                  {% if current_user.admin %}
+                  <span class="btn btn-secondary"><a
+                    href="{{ url_for('delete_file', category=vid.f_type, id=vid.id) }}"
+                      onclick="return confirm('You are deleting the video permanently');">Delete this video</a>
+                  </span>
+                  {% endif %}
+                  <button type="button" class="btn btn-primary" onclick="document.querySelector('#vid{{vid.id}}').pause();" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <a class="fa fa-plus-circle fa-4x text-primary position-fixed" style="bottom:50px;right:30px" href="{{ url_for('upload_file') }}"></a>
+  </div>
+</section>
+
+{% endblock %}

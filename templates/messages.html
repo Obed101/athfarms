@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="p-4 text-center bg-light">Notice Board
+<p class="small text-muted text-center">All user messages and requests</p></h2>
+<!-- All Notices -->
+{% for note in notices.items %}
+<div class="border border-info w-75 p-3 m-3 mx-auto small100" style="border-radius:16px;">
+  <div class="bg-primary p-2 w-100 text-white font-weight-bold"
+      style="width:fit-content;border-radius:16px 16px 0 0;">Message from {{ note.name }} ({{ note.email }}) &nbsp;
+        <a href="{{ url_for('del_message',id=note.id) }}" class="fa fa-trash-alt float-end p-2 border-bottom"
+          onclick="return confirm('You are deleting this permanently');" title="Delete"></a>
+</div>
+<div class="py-4 text-muted">{{ note.message|safe }}</div>
+   Auto Generated
+  <div class="float-end small"> {{ note.date }} </div>
+</div>
+{% endfor %}
+
+<!-- Pagination -->
+<nav aria-label="navigation" class="m-5">
+  <ul class="pagination justify-content-end py-3">
+    <li class="page-item {% if notices.page == 1 %}disabled{% endif %}">
+      <a href="/messages?page={{ notices.prev_num }}" class="page-link">Prev</a>
+    </li>
+
+    {% for page_num in notices.iter_pages(left_edge=2, right_edge=2, left_current=0, right_current=0) %}
+    {% if page_num %}
+    {% if page_num == notices.pages %}
+    <li class="page-item"><a class="page-link" href="/messages?page={{ page_num}}">{{ page_num }}</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="/messages?page={{ page_num}}">{{ page_num }}</a></li>
+    {% endif %}
+    {% else %}
+    <span class="fa fa-ellipsis-h mx-1 pt-4 text-muted"></span>
+    {% endif %}
+    {% endfor %}
+
+    <li class="page-item {% if notices.page == notices.pages %}disabled{% endif %}">
+      <a class="page-link" href="/messages?page={{ notices.next_num }}">Next</a>
+    </li>
+  </ul>
+</nav>
+<!-- Pagination ended -->
+
+{% endblock %}

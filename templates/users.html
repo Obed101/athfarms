@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<h4 class="pt-3 mx-auto bg-light text-center mb-0">
+    {% if all > 1 %} {{ all }} persons have account on Athfarms {% else %}
+    {{ all }} person has account on Athfarms {% endif %}
+</h4> <p class="text-center pb-4 bg-light border-bottom">Only those with opened envelopes receive admin notices (click to toggle)</p>
+
+{% for user in users %}
+<div class="d-flex py-3 px-2 alert-success my-3 w-75 mx-auto small100"
+ style="border-radius:25px 5px;background:linear-gradient(270deg, #ede1ee,#c5dad7);box-shadow:#c8fac6 0 2px 4px;">
+    <div class="col-1">
+        {% if user.pic %}
+        <img src="{{user.pic}}" class="rounded-circle mx-3" alt="profile" height="40" width="40">
+        {% else %}
+        <div class="rounded-circle mx-3 text-white d-inline-block bg-{{ template.random.choice(['info', 'secondary', 'primary', 'danger']) }}"
+            style="height: 40px;width:40px;">
+        <div class="text-center" style="font-size: x-large;">{{ user.fullname[0] }}</div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-3">{{ user.fullname }} {{ '(You)' if user.id==current_user.id else '' }}</div>
+    <div class="col-3 pl-0">{{ user.email }} </div>
+    <div class="col-2 text-capitalize sm-right">{{ 'Admin' if user.admin else 'Customer' }} </div>
+
+    <div class="col-2 border-left border-white pl-0">
+        <a href="/users/{{ user.id }}/delete"
+            onclick="return confirm('Delete {{user.fullname}}\'s account?\nYou can\'t undo after deleting');">
+            <div title="Delete {{ user.fullname if not user == current_user else 'Yourself' }}"
+                class="btn text-danger p-1 fa fa-trash-alt"></div>
+        </a>
+        {% if user.admin %}
+        <a href="{{ url_for('add_receiver', id=user.id) }}">
+            <div class="btn fa fa-envelope{{'-open text-success' if user.mail else ' text-primary' }}"></div>
+        </a>
+        {% endif %}
+        {% if not user.id == current_user.id %}
+        <a href="{{ url_for('reset_password', id=user.id) }}"
+            onclick="return confirm('You are resetting {{user.fullname}}\'s password\nYou can\'t undo after proceeding');">
+            <div title="Reset {{ user.fullname }}'s password" class="btn text-primary fa fa-undo"></div>
+        </a>
+        {% elif current_user == user %}
+        <a href="{{ url_for('profile') }}">
+            <div class="btn text-primary fa fa-edit" title="Edit"></div>
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+                <!-- ARTICLE SUBSCRIBERS -->
+<div id="subs" class="mx-auto w-75 mb-5 bg-light border border-info p-4">
+    <h4 class="btn d-block btn-info" onclick="$('.sbb').toggleClass('d-none')">Article Subscribers ({{ template['subs_no'] }})</h4>
+    <hr class="w-75 mx-auto">
+    {% for sub in template['subs'] %}
+    <div class="sbb d-none d-flex py-3 alert-success my-1 mx-auto small100 border" id="sbb"
+      style="border-radius:25px 5px;background:linear-gradient(90deg, #ede1ee,#c5dad7);">
+      <div class="col-sm mx-3">{{ sub.name or 'Subscriber'}}</div>
+      <div class="col-sm">{{ sub.email }}</div>
+      <a href="{{ url_for('del_subscriber', id=sub.id) }}" onclick="return confirm('Delete {{ sub.name }}?\nYou can\'t undo after deleting');">
+        <div title="Delete" class="btn text-danger pr-3 fa fa-trash-alt"></div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  
+
+<a href="{{ url_for('add_user')}}" class=" position-fixed fa fa-plus-circle fa-3x add"
+style="right: 5%;bottom: 25px;z-index:5;opacity:.65;color: #8ebdb6;"></a>
+
+{% endblock %}

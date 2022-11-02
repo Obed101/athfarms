@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+{{ form.hidden_tag() }}
+
+<div class="p-5 bg-light mt-2 m-auto border" style="width: fit-content;">
+  <h4>Create a New Notice Message</h4>
+  <form method="post" onsubmit="return document.getElementById('ing').value = 'Processing...'">
+    {{form.subject(placeholder='Your message title', class='my-2', size=40) }}
+    {{ ckeditor.create() }}
+  <div onclick="history.back()" class="float-left bg-white mt-2 border-dark btn">Cancel</div>
+    {{ form.submit(class='btn btn-primary float-end mt-2', id='ing') }}
+  </form>
+  {{ ckeditor.load() }}
+  {{ ckeditor.config(name='message') }}
+</div>
+{% endblock %}

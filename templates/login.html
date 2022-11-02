@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5 bg-light mx-auto border my-5" style="width: fit-content;">
+    {{ form.hidden_tag() }}
+    <h5 class="py-4 text-center h4 text-info"> Login to Athfarms</h5>
+    
+    <form method="post">
+        {{ form.email(size=40, class='form-control', placeholder='Your email address') }}
+        <hr>
+        {{ form.password(size=40, class='form-control', placeholder='Your password', required='required')}} <br>
+        <div>
+            <div class="btn btn-light border float-left m-3 p-2" onclick="history.back()">Cancel</div>
+            {{ form.submit(class='btn btn-primary m-3 float-end') }}
+        </div> 
+    </form>
+    <a href="{{ url_for('signup') }}" class="mt-2 d-block text-center">I don't have an account</a>
+</div>
+{% endblock %}
