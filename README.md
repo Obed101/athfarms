@@ -1,5 +1,5 @@
 # ATHFARMS
-Private Repository For The Athframs Project
+Public Repository For The Athframs Project
 
 The Athfarms project is a web application I built for an individual firm to market agricultural goods and services  
 `utils.py` among other items are not published to this repository. Contact me for the private repo  
